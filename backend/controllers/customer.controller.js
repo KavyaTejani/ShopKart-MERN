@@ -83,12 +83,12 @@ const loginCustomer = async (req, res) => {
             })
         }
 
-        const token = generateToken(customer._id); // what does generateToken do?
-        res.cookie("token", token,{  // what is res.cookie? what are cookies? why does it eliminate the need the request of the user to reach the server and reply the user instead of the server?
-            httpOnly: true, // what is httpOnly, secure, samasite? what do they do?
+        const token = generateToken(customer._id);
+        res.cookie("token", token, {
+            httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            sameSite: "lax"
-        })
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax"
+        });
 
         return res.status(200).json({
             success: true,
@@ -122,7 +122,11 @@ const getProfile = async(req, res) => {
 
 const logoutCustomer = async (req, res) => {
     
-    res.clearCookie("token"); // what does clearCookie do? how does it clear the info of the user from the database?
+    res.clearCookie("token", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax"
+    });
 
     return res.status(200).json({
         success: true,

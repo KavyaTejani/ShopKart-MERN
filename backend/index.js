@@ -14,12 +14,18 @@ const orderRoutes = require("./routes/order.routes.js");
 
 const app = express();
 
-app.use(
-    cors({
-        origin: "http://localhost:5173",
-        credentials: true
-    })
-);
+const allowedOrigins = [
+  "http://localhost:5173",
+  ...(process.env.CLIENT_URL || "")
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean)
+];
+
+app.use(cors({
+    origin: allowedOrigins,
+    credentials: true
+}));
 
 app.use(express.json());
 app.use(cookieParser());

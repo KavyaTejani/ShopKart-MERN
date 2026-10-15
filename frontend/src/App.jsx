@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 
 import Register from "./pages/Register";
 import Login from "./pages/Login";
@@ -25,6 +25,8 @@ function App() {
       {!hideNavbar && <Navbar />}
 
       <Routes>
+        <Route path="/" element={<Navigate to="/login" replace />} />
+
         <Route
           path="/register"
           element={<Register />}
